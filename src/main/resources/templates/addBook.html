@@ -1,0 +1,128 @@
+<html>
+<head>
+    <title>도서 등록</title>
+    <link href="/BookMarket/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container py-4">
+    <header class="pb-3 mb-4 border-bottom">
+        <a href="/BookMarket/home" class="d-flex align-items-center text-body-emphasis text-decoration-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-book-half me-2" viewBox="0 0 16 16">
+                <path d="M8.5 2.687c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+            </svg>
+            <span class="fs-4">BookMarket</span>
+        </a>
+    </header>
+
+    <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold"><span th:text="#{addBook.form.title.label}" /></h1>
+            <p class="col-md-8 fs-4">BookMarket</p>
+        </div>
+    </div>
+    <div class="row align-items-md-stretch">
+        <div class="text-end" style="padding-right:30px">
+<!--             <form> 태그 선언 및 로그아웃을 위한 요청 경로 설정-->
+            <form action="/BookMarket/logout" method="POST">
+            <a href="?lang=ko" style="text-decoration-line:none">Korean</a>
+            <a href="?lang=en" style="text-decoration-line:none">English</a>
+                <input type="submit" class="btn btn-sm btn-success" value="Logout" />
+            </form>
+        </div>
+        <form th:object="${book}" action="/BookMarket/books/add" method="post" enctype="multipart/form-data">
+            <legend>[[#{addBook.form.subtitle.label}]]</legend>
+            <div class="mb-3 row">
+                <label class="col-sm-2 control-label"><span th:text="#{addBook.form.bookId.label}" /></label>
+                <div class="col-sm-3">
+                    <input  type="text" name="bookId"  class="form-control" th:field="*{bookId}"/>
+                </div>
+                <div class="col-sm-6">
+                    <p class="text-danger" th:errors="*{bookId}" />
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 control-label" ><span th:text="#{addBook.form.name.label}" /></label>
+                <div class="col-sm-3">
+                    <input   type="text" name="name"  class="form-control" th:field="*{name}"/>
+                </div>
+                <div class="col-sm-6">
+                    <p class="text-danger" th:errors="*{name}" />
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 control-label" ><span th:text="#{addBook.form.unitPrice.label}" /></label>
+                <div class="col-sm-3">
+                    <input   type="text" name="unitPrice" class="form-control" th:field="*{unitPrice}"/>
+                </div>
+                <div class="col-sm-6">
+                    <p class="text-danger" th:errors="*{unitPrice}" />
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 control-label" ><span th:text="#{addBook.form.author.label}" /></label>
+                <div class="col-sm-3">
+                    <input   type="text" name="author" class="form-control" th:field="*{author}"/>
+                </div>
+                <div class="col-sm-6">
+                    <p class="text-danger" th:errors="*{author}" />
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 control-label" ><span th:text="#{addBook.form.description.label}" /></label>
+                <div class="col-sm-5">
+                    <textarea  type="text" name="description" cols="50" rows="2" class="form-control" th:field="*{description}"></textarea>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 control-label" ><span th:text="#{addBook.form.publisher.label}" /></label>
+                <div class="col-sm-3">
+                    <input   type="text" name="publisher" class="form-control" th:field="*{publisher}"/>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 control-label" ><span th:text="#{addBook.form.category.label}" /></label>
+                <div class="col-sm-3">
+                    <input  type="text" name="category" class="form-control" th:field="*{category}"/>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 control-label" ><span th:text="#{addBook.form.unitsInStock.label}" /> </label>
+                <div class="col-sm-3">
+                    <input type="text" name="unitsInStock" th:field="*{unitsInStock}" class="form-control"/>
+                </div>
+                <div class="col-sm-6">
+                    <p class="text-danger" th:errors="*{unitsInStock}" />
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 control-label" ><span th:text="#{addBook.form.releaseDate.label}" /></label>
+                <div class="col-sm-3">
+                    <input  type="text" name="releaseDate" class="form-control" th:field="*{releaseDate}"/>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 control-label" ><span th:text="#{addBook.form.condition.label}" /></label>
+                <div class="col-sm-3">
+                    <input type="radio" name="condition" value="New" /> New
+                    <input type="radio"  name="condition" value="Old" /> Old
+                    <input type="radio" name="condition" value="E-Book" /> E-Book
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 control-label"><span th:text="#{addBook.form.bookImage.label}" /></label>
+                <div class="col-sm-7">
+                    <input type="file" name="bookImage" class="form-control"/>
+                    </div>
+                </div>
+                <div class="col-sm-offset-2 col-sm-10" >
+                    <input type="submit" class="btn btn-primary" th:text="#{addBook.form.button.label}" />
+                </div>
+            </div>
+        </form>
+        <footer class="pt-3 mt-4 text-body-secondary border-top">
+            <span class="text-body-secondary"> &copy; BookMarket</span>
+        </footer>
+    </div>
+</body>
+</html>
