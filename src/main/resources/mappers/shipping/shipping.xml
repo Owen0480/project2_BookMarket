@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "mybatis-3-mapper.dtd">
+
+<mapper namespace="com.springboot.repository.mybatis.ShippingMapper">
+
+    <!-- resultMap 정의: Shipping + Address 매핑 -->
+    <resultMap id="ShippingResultMap" type="com.springboot.domain.Shipping">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="date" column="date"/>
+        <association property="address" javaType="com.springboot.domain.Address">
+            <id property="id" column="address_id"/>
+            <result property="street" column="street"/>
+            <result property="city" column="city"/>
+        </association>
+    </resultMap>
+
+    <!-- SELECT -->
+    <select id="findShippingById" parameterType="long" resultMap="ShippingResultMap">
+        SELECT s.id, s.name, s.date,
+        a.id AS address_id, a.street, a.city
+        FROM shipping s
+        LEFT JOIN address a ON s.address_id = a.id
+        WHERE s.id = #{id}
+    </select>
+
+    <!-- INSERT -->
+    <insert id="insertShipping" parameterType="com.springboot.domain.Shipping">
+        INSERT INTO shipping (name, date, address_id)
+        VALUES (#{name}, #{date}, #{address.id})
+    </insert>
+
+</mapper>

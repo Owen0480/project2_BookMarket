@@ -15,6 +15,12 @@ public class CartServiceImpl implements CartService {
     public Cart read(String cartId) {
         return cartRepository.read(cartId);
     }
+
+    @Override
+    public Cart validateCart(String cartId) {
+        return null;
+    }
+
     public void update(String cartId, Cart cart) {
         cartRepository.update(cartId, cart);
     }

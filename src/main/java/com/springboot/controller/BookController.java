@@ -36,6 +36,7 @@ public class BookController {
     @GetMapping
     public String requestBookList(Model model) {
         List<Book> bookList = bookService.getAllBookList();
+
         model.addAttribute("bookList", bookList);
         return "books";
     }
@@ -51,6 +52,7 @@ public class BookController {
     @GetMapping("/book")
     public String requestBookById(@RequestParam("id") String bookId, Model model) {
         Book bookById = bookService.getBookById(bookId);
+
         model.addAttribute("book", bookById);
         return "book";
     }
@@ -58,12 +60,30 @@ public class BookController {
     @GetMapping("/{category}")
     public String requestBooksByCategory(
             @PathVariable("category") String category, Model model) {
+        System.out.println("Searching for category: [" + category + "]");
         List<Book> booksByCategory = bookService.getBooksByCategory(category);
+        System.out.println("Found " + (booksByCategory != null ? booksByCategory.size() : 0) + " books");
+        if (booksByCategory != null) {
+            for (Book book : booksByCategory) {
+                System.out.println("Book: " + book.getName() + ", Category: [" + book.getCategory() + "]");
+            }
+        }
         if(booksByCategory == null || booksByCategory.isEmpty()) {
-            throw new CategoryException();
+            throw new CategoryException(category);
         }
         model.addAttribute("bookList", booksByCategory);
         return "books";
+    }
+
+    @ExceptionHandler(CategoryException.class)
+    public ModelAndView handleError(HttpServletRequest req, CategoryException exception) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("errorMessage", exception.getErrorMessage());
+        mav.addObject("category", exception.getCategory());
+        mav.addObject("exception", exception);
+        mav.addObject("url", req.getRequestURL());
+        mav.setViewName("errorCategory");
+        return mav;
     }
 
     @GetMapping("/filter/{bookFilter}")

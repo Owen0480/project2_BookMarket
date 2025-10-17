@@ -1,0 +1,114 @@
+<html>
+<head>
+    <title>주문 정보</title>
+    <link href="/BookMarket/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container py-4">
+    <th:block th:replace="~{/module/header}"></th:block>
+    <header class="pb-3 mb-4 border-bottom">
+        <a href="/BookMarket/home" class="d-flex align-items-center text-body-emphasis text-decoration-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                 class="bi bi-book-half me-2" viewBox="0 0 16 16">
+                <path d="M8.5 2.687c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+            </svg>
+            <span class="fs-4">BookMarket</span>
+        </a>
+    </header>
+
+    <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">주문 정보 </h1>
+            <p class="col-md-8 fs-4">BookMarket</p>
+        </div>
+
+    </div>
+    <div class="row align-items-md-stretch">
+        <form th:object="${order}" action="/BookMarket/order/orderConfirmation" method="post" class="form-horizontal">
+            <div class="container  col-md-10  py-5" style="background:#fafafe">
+                <div class="text-center">
+                    <h1>영수증</h1>
+                </div>
+                <div class="row  text-left">
+                    <div class="col-md-6  py-3">
+
+                        <strong>배송 주소</strong><br>
+                        성명 : [[${order.shipping.name}]]<br>
+                        우편번호 : [[${order.shipping.address.zipcode}]]<br>
+                        주소 : [[${order.shipping.address.addressname}]] [[${order.shipping.address.detailname}]]
+                        ([[${order.shipping.address.country}]])<br>
+
+                    </div>
+                    <div class="col-md-6 text-right py-3">
+                        <p><em>배송일: [[${order.shipping.date}]]</em></p>
+                    </div>
+
+                </div>
+                <div class="row text-left">
+                    <div class="col-md-6 py-2">
+                        <address>
+                            <strong>청구주소</strong> <br>
+                            성명 : [[${order.customer.name}]]<br>
+                            우편번호 :[[${order.customer.address.zipcode}]]<br>
+                            주소 : [[${order.customer.address.addressname}]] [[${order.customer.address.detailname}]]
+                            ([[${order.customer.address.country}]])<br>
+                            HP : [[${order.customer.phone}]]<br>
+                        </address>
+                    </div>
+                </div>
+
+                <div class="row  py-2">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>도서</th>
+                            <th>수량</th>
+                            <th class="text-center">가격</th>
+                            <th class="text-center">소계</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <div class="col-md-4" th:each="cartItem:${order.orderItems}">
+
+                            <tr>
+
+                                <td>
+                                    <em th:each="book:${bookList}"
+                                        th:if="${#strings.equals(book.bookId, cartItem.value.bookId)}">[[${book.name}]]</em>
+                                </td>
+
+                                <td style="text-align: center">[[${cartItem.value.quantity}]]</td>
+                                <td class="text-center">
+                                    <span th:each="book:${bookList}"
+                                          th:if="${#strings.equals(book.bookId, cartItem.value.bookId)}">[[${book.unitPrice}]]원</span>
+                                </td>
+
+                                <td class="text-center">[[${cartItem.value.totalPrice}]]원</td>
+                            </tr>
+                        </div>
+
+
+                        <tr>
+                            <td> </td>
+                            <td> </td>
+                            <td class="text-right"><h5><strong>총액: </strong></h5></td>
+                            <td class="text-center text-danger"><h4><strong>[[${order.grandTotal}]]</strong></h4></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="container col-md-5  py-3">
+
+                    <a href="/BookMarket/order/orderShippingInfo" class=" btn btn-Secondary" role="button">이전</a>
+                    <input type="submit" class="btn btn-success" value="주문완료"/>
+                    <a href="/BookMarket/order/orderCancelled" class="btn btn-Secondary" role="button">취소</a>
+                </div>
+        </form>
+    </div>
+    <th:block th:replace="~{/module/footer}"></th:block>
+</div>
+
+</body>
+</html>
